@@ -48,3 +48,4 @@ class PythonPage:
 
     def should_have_StaticText(self):
         expect(self.StaticText).to_be_visible()
+
