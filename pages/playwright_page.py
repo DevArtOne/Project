@@ -25,11 +25,13 @@ class PythonPage:
     def __init__(self, page: Page):
         self.page = page
 
-        self.about_link = page.get_by_role("link", name= "About")
-        self.downloads_link = page.get_by_role("link", name= "Downloads")
-        self.documentation_link = page.get_by_role("link", name= "Documentation")
-        self.community_link = page.get_by_role("link", name= "Community")
-        self.StaticText = page.get_by_text("Python is a programming language that lets you work quickly")
+        menubar = page.get_by_role("menubar")
+
+        self.about_link = menubar.get_by_role("link", name= "About", exact=True)
+        self.downloads_link = menubar.get_by_role("link", name= "Downloads", exact=True)
+        self.documentation_link = menubar.get_by_role("link", name= "Documentation", exact=True)
+        self.community_link = menubar.get_by_role("link", name= "Community", exact=True)
+        self.static_text  = page.locator(".introduction p").filter(has_text="Python is a programming language that lets you work quickly").first
 
     def open(self):
         self.page.goto("https://www.python.org/")
@@ -46,6 +48,5 @@ class PythonPage:
     def click_community_link(self):
         self.community_link.click()
 
-    def should_have_StaticText(self):
-        expect(self.StaticText).to_be_visible()
-
+    def should_have_static_text(self):
+        expect(self.static_text ).to_be_visible()

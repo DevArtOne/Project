@@ -27,7 +27,7 @@ def test_open_python_home(page):
     home_page = PythonPage(page)
 
     home_page.open()
-    home_page.should_have_StaticText()
+    home_page.should_have_static_text()
 
 def test_about_link_navigation(page):
     home_page = PythonPage(page)
