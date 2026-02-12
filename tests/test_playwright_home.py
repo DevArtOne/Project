@@ -23,6 +23,41 @@ from playwright.sync_api import expect
 #
 #     expect(page).to_have_url("https://playwright.dev/docs/intro")
 
+# ----------Test top-bar-----------------------
+def test_psf_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_psf_link()
+    expect(page).to_have_url("https://www.python.org/psf-landing/")
+def test_docs_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_docs_link()
+    expect(page).to_have_url("https://docs.python.org/3/")
+def test_pypi_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_pypi_link()
+    expect(page).to_have_url("https://pypi.org/")
+def test_jobs_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_jobs_link()
+    expect(page).to_have_url("https://www.python.org/jobs/")
+def test_community_top_bar_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_community_top_bar_link()
+    expect(page).to_have_url("https://www.python.org/community/")
+def test_python_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_python_link()
+    expect(page).to_have_url("https://www.python.org/")
+
+# ----------Test top-bar-----------------------
+
+
 def test_open_python_home(page):
     home_page = PythonPage(page)
     home_page.open()
@@ -46,10 +81,10 @@ def test_documentation_link_navigation(page):
     home_page.click_documentation_link()
     expect(page).to_have_url("https://www.python.org/doc/")
 
-def test_community_link_navigation(page):
+def test_community_menubar_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
-    home_page.click_community_link()
+    home_page.click_community_menubar_link()
     expect(page).to_have_url("https://www.python.org/community/")
 
 def test_donate_link_navigation(page):
