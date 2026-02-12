@@ -22,16 +22,21 @@ from playwright.sync_api import Page, expect
 
 
 class PythonPage:
-    def __init__(self, page: Page):
+    def __init__(self, page: Page):  
         self.page = page
 
         menubar = page.get_by_role("menubar")
+        footer = page.get_by_role("contentinfo")
 
         self.about_link = menubar.get_by_role("link", name= "About", exact=True)
         self.downloads_link = menubar.get_by_role("link", name= "Downloads", exact=True)
         self.documentation_link = menubar.get_by_role("link", name= "Documentation", exact=True)
         self.community_link = menubar.get_by_role("link", name= "Community", exact=True)
         self.static_text  = page.locator(".introduction p").filter(has_text="Python is a programming language that lets you work quickly").first
+        self.donate_link = page.get_by_role("link", name= "Donate", exact=True)
+        self.support_text = page.get_by_role("heading", name= "Support the PSF with a Donation or by becoming a Supporting Member!", exact=True)
+        self.footer_about_link = footer.get_by_role("link", name= "About", exact=True)
+
 
     def open(self):
         self.page.goto("https://www.python.org/")
@@ -50,3 +55,10 @@ class PythonPage:
 
     def should_have_static_text(self):
         expect(self.static_text ).to_be_visible()
+
+    def open_donate_and_should_have_main_header(self):
+        self.donate_link.click()
+        expect(self.support_text).to_be_visible()
+
+    def click_footer_about_link(self):
+        self.footer_about_link.click()
