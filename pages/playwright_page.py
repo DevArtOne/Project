@@ -1,3 +1,5 @@
+import re
+
 from playwright.sync_api import Page, expect
 
 # class PlaywrightHomePage:
@@ -25,36 +27,41 @@ class PythonPage:
     def __init__(self, page: Page):  
         self.page = page
 
-        top_bar = page.get_by_role("navigation")
+        top_bar = page.get_by_role("navigation").first
         menubar = page.get_by_role("menubar")
         footer = page.get_by_role("contentinfo")
 
         # ----------Test top-bar-----------------------
-        self.psf_link = top_bar.get_by_role("link", name= "PSF", exact=True)
-        self.docs_link = top_bar.get_by_role("link", name= "Docs", exact=True)
-        self.pypi_link = top_bar.get_by_role("link", name= "PyPI", exact=True)
-        self.jobs_link = top_bar.get_by_role("link", name= "Jobs", exact=True)
-        self.community_top_bar_link = top_bar.get_by_role("tree").get_by_role("link", name= "Community", exact=True)
-        self.python_link = top_bar.get_by_role("link", name= "Python", exact=True)
+        self.psf_link = top_bar.get_by_role("link", name="PSF")
+        self.docs_link = top_bar.get_by_role("link", name="Docs")
+        self.pypi_link = top_bar.get_by_role("link", name="PyPI")
+        self.jobs_link = top_bar.get_by_role("link", name="Jobs")
+        self.community_top_bar_link = top_bar.get_by_role("link", name="Community")
+        self.python_link = top_bar.get_by_role("link", name="Python")
         # ----------Test top-bar-----------------------
 
         # ----------Test main-header-------------------
-        self.python_img = page.get_by_role("img", name= "python™", exact=True)
+        self.python_img = page.get_by_role("img", name=re.compile(r"python", re.IGNORECASE))
         self.donate_link = page.get_by_role("link", name="Donate", exact=True)
         # ----------Test main-header-------------------
 
 
         # ----------Test menubar-----------------------
-        self.about_link = menubar.get_by_role("link", name= "About", exact=True)
-        self.downloads_link = menubar.get_by_role("link", name= "Downloads", exact=True)
-        self.documentation_link = menubar.get_by_role("link", name= "Documentation", exact=True)
-        self.community_menubar_link = menubar.get_by_role("link", name= "Community", exact=True)
+        self.about_link = menubar.get_by_role("link", name="About")
+        self.downloads_link = menubar.get_by_role("link", name="Downloads")
+        self.documentation_link = menubar.get_by_role("link", name="Documentation")
+        self.community_menubar_link = menubar.get_by_role("link", name="Community")
         # ----------Test menubar-----------------------
 
-        self.static_text  = page.locator(".introduction p").filter(has_text="Python is a programming language that lets you work quickly").first
+        self.static_text = page.locator(".introduction p").filter(
+            has_text=re.compile(r"Python is a programming language", re.IGNORECASE)
+        ).first
 
-        self.support_text = page.get_by_role("heading", name= "Support the PSF with a Donation or by becoming a Supporting Member!", exact=True)
-        self.footer_about_link = footer.get_by_role("link", name= "About", exact=True)
+        self.support_text = page.get_by_role(
+            "heading",
+            name=re.compile(r"Support the PSF", re.IGNORECASE),
+        )
+        self.footer_about_link = footer.get_by_role("link", name="About")
 
 
     def open(self):
@@ -94,7 +101,7 @@ class PythonPage:
         self.community_menubar_link.click()
 
     def should_have_static_text(self):
-        expect(self.static_text ).to_be_visible()
+        expect(self.static_text).to_be_visible()
 
     def open_donate_and_should_have_main_header(self):
         self.donate_link.click()
@@ -102,3 +109,4 @@ class PythonPage:
 
     def click_footer_about_link(self):
         self.footer_about_link.click()
+

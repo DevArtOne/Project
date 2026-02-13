@@ -1,5 +1,15 @@
 from pages.playwright_page import PythonPage
-from playwright.sync_api import expect
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, expect
+
+
+def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=2000):
+    try:
+        with page.context.expect_page(timeout=popup_timeout_ms) as popup_info:
+            click_fn()
+        popup_page = popup_info.value
+        expect(popup_page).to_have_url(expected_url)
+    except PlaywrightTimeoutError:
+        expect(page).to_have_url(expected_url)
 
 # def test_open_playwright_home(page):
 #     home_page = PlaywrightHomePage(page)
@@ -32,13 +42,13 @@ def test_psf_link_navigation(page):
 def test_docs_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
-    home_page.click_docs_link()
-    expect(page).to_have_url("https://docs.python.org/3/")
+    click_link_and_expect_url(
+        page, home_page.click_docs_link, "https://docs.python.org/3/"
+    )
 def test_pypi_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
-    home_page.click_pypi_link()
-    expect(page).to_have_url("https://pypi.org/")
+    click_link_and_expect_url(page, home_page.click_pypi_link, "https://pypi.org/")
 def test_jobs_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
