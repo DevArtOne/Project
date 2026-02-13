@@ -34,7 +34,7 @@ class PythonPage:
         self.docs_link = top_bar.get_by_role("link", name= "Docs", exact=True)
         self.pypi_link = top_bar.get_by_role("link", name= "PyPI", exact=True)
         self.jobs_link = top_bar.get_by_role("link", name= "Jobs", exact=True)
-        self.community_top_bar_link = top_bar.get_by_role("link", name= "Community", exact=True)
+        self.community_top_bar_link = top_bar.get_by_role("tree").get_by_role("link", name= "Community", exact=True)
         self.python_link = top_bar.get_by_role("link", name= "Python", exact=True)
         # ----------Test top-bar-----------------------
 
