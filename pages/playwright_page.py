@@ -38,6 +38,12 @@ class PythonPage:
         self.python_link = top_bar.get_by_role("link", name= "Python", exact=True)
         # ----------Test top-bar-----------------------
 
+        # ----------Test main-header-------------------
+        self.python_img = page.get_by_role("img", name= "python™", exact=True)
+        self.donate_link = page.get_by_role("link", name="Donate", exact=True)
+        # ----------Test main-header-------------------
+
+
         # ----------Test menubar-----------------------
         self.about_link = menubar.get_by_role("link", name= "About", exact=True)
         self.downloads_link = menubar.get_by_role("link", name= "Downloads", exact=True)
@@ -46,7 +52,7 @@ class PythonPage:
         # ----------Test menubar-----------------------
 
         self.static_text  = page.locator(".introduction p").filter(has_text="Python is a programming language that lets you work quickly").first
-        self.donate_link = page.get_by_role("link", name= "Donate", exact=True)
+
         self.support_text = page.get_by_role("heading", name= "Support the PSF with a Donation or by becoming a Supporting Member!", exact=True)
         self.footer_about_link = footer.get_by_role("link", name= "About", exact=True)
 
@@ -69,6 +75,11 @@ class PythonPage:
         self.python_link.click()
 # ----------Test top-bar-----------------------
 
+# ----------Test main-header-------------------
+    def should_have_img(self):
+        expect(self.python_img).to_be_visible()
+        assert self.python_img.evaluate("img => img.naturalWidth > 0")
+# ----------Test main-header-------------------
 
     def click_about_link(self):
         self.about_link.click()

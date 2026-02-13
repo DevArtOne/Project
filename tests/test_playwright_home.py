@@ -62,6 +62,7 @@ def test_open_python_home(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.should_have_static_text()
+    home_page.should_have_img()
 
 def test_about_link_navigation(page):
     home_page = PythonPage(page)
@@ -98,3 +99,9 @@ def test_footer_about_link_navigation(page):
     home_page.open()
     home_page.click_footer_about_link()
     expect(page).to_have_url("https://www.python.org/about/")
+
+# def test_should_have_img(page):
+#     home_page = PythonPage(page)
+#     home_page.open()
+#     expect(page.python_img).to_be_visible()
+#     assert page.python_img.evaluate("img => img.naturalWidth > 0")
