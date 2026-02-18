@@ -1,7 +1,14 @@
+import re
+
 from pages.playwright_page import PythonPage
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, expect
 
-
+# --------------------------------
+""" helper‑функція, щоб стабільно перевіряти переходи, коли лінк може:
+1.
+Відкритися в новій вкладці (popup)
+2.
+Відкритися в цій же вкладці"""
 def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=2000):
     try:
         with page.context.expect_page(timeout=popup_timeout_ms) as popup_info:
@@ -10,6 +17,8 @@ def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=200
         expect(popup_page).to_have_url(expected_url)
     except PlaywrightTimeoutError:
         expect(page).to_have_url(expected_url)
+#--------------------------------
+
 
 # def test_open_playwright_home(page):
 #     home_page = PlaywrightHomePage(page)
@@ -66,13 +75,22 @@ def test_python_link_navigation(page):
     expect(page).to_have_url("https://www.python.org/")
 
 # ----------Test top-bar-----------------------
-
+def test_python_img(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.should_have_img()
+def test_search_playwright_with_enter(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.search_for("playwright")
+    expect(page).to_have_url(re.compile(r"/search/"))
+# ----------Test main-header-------------------
 
 def test_open_python_home(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.should_have_static_text()
-    home_page.should_have_img()
+    home_page.should_have_title_python()
 
 def test_about_link_navigation(page):
     home_page = PythonPage(page)
@@ -85,6 +103,7 @@ def test_downloads_link_navigation(page):
     home_page.open()
     home_page.click_downloads_link()
     expect(page).to_have_url("https://www.python.org/downloads/")
+    home_page.should_have_download_python_button()
 
 def test_documentation_link_navigation(page):
     home_page = PythonPage(page)
@@ -101,8 +120,9 @@ def test_community_menubar_link_navigation(page):
 def test_donate_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
-    home_page.open_donate_and_should_have_main_header()
+    home_page.open_donate()
     expect(page).to_have_url("https://www.python.org/psf/donations/")
+    home_page.should_have_main_header()
 
 def test_footer_about_link_navigation(page):
     home_page = PythonPage(page)

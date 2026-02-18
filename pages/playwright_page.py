@@ -43,6 +43,7 @@ class PythonPage:
         # ----------Test main-header-------------------
         self.python_img = page.get_by_role("img", name=re.compile(r"python", re.IGNORECASE))
         self.donate_link = page.get_by_role("link", name="Donate", exact=True)
+        self.search_input = page.get_by_role("textbox")
         # ----------Test main-header-------------------
 
 
@@ -52,7 +53,7 @@ class PythonPage:
         self.documentation_link = menubar.get_by_role("link", name="Documentation")
         self.community_menubar_link = menubar.get_by_role("link", name="Community")
         # ----------Test menubar-----------------------
-
+        self.download_python_button = page.get_by_role("link", name="Download Python")
         self.static_text = page.locator(".introduction p").filter(
             has_text=re.compile(r"Python is a programming language", re.IGNORECASE)
         ).first
@@ -86,13 +87,24 @@ class PythonPage:
     def should_have_img(self):
         expect(self.python_img).to_be_visible()
         assert self.python_img.evaluate("img => img.naturalWidth > 0")
+    def open_donate(self):
+        self.donate_link.click()
+    def search_for(self, text: str):
+        self.search_input.fill(text)
+        self.search_input.press("Enter")
 # ----------Test main-header-------------------
+
+    def should_have_title_python(self):
+        expect(self.page).to_have_title(re.compile(r"Python", re.IGNORECASE))
 
     def click_about_link(self):
         self.about_link.click()
 
     def click_downloads_link(self):
         self.downloads_link.click()
+
+    def should_have_download_python_button(self):
+        expect(self.download_python_button).to_be_visible()
 
     def click_documentation_link(self):
         self.documentation_link.click()
@@ -103,8 +115,9 @@ class PythonPage:
     def should_have_static_text(self):
         expect(self.static_text).to_be_visible()
 
-    def open_donate_and_should_have_main_header(self):
-        self.donate_link.click()
+
+
+    def should_have_main_header(self):
         expect(self.support_text).to_be_visible()
 
     def click_footer_about_link(self):
