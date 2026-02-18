@@ -106,7 +106,8 @@ class PythonPage:
 
 # -----------Test main-content list-widgets row------------------------
     def should_have_upcoming_events(self):
-        expect(self.upcoming_events).to_have_count(5)
+        # expect(self.upcoming_events).to_have_count(5)  інший спочіб перевірити кількість елементів
+        assert self.upcoming_events.count() == 5
 # -----------Test main-content list-widgets row------------------------
 
     def should_have_title_python(self):
