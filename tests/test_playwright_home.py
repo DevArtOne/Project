@@ -86,6 +86,13 @@ def test_search_playwright_with_enter(page):
     expect(page).to_have_url(re.compile(r"/search/"))
 # ----------Test main-header-------------------
 
+# -----------Test main-content list-widgets row------------------------
+def test_upcoming_events(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.should_have_upcoming_events()
+# -----------Test main-content list-widgets row------------------------
+
 def test_open_python_home(page):
     home_page = PythonPage(page)
     home_page.open()

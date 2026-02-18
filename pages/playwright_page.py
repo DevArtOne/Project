@@ -53,6 +53,13 @@ class PythonPage:
         self.documentation_link = menubar.get_by_role("link", name="Documentation")
         self.community_menubar_link = menubar.get_by_role("link", name="Community")
         # ----------Test menubar-----------------------
+
+        # -----------Test main-content row------------------------
+        # -----------Test main-content row------------------------
+
+        # -----------Test main-content list-widgets row------------------------
+        self.upcoming_events = page.locator(".medium-widget.event-widget.last").locator(".shrubbery").locator(".menu li")
+        # -----------Test main-content list-widgets row------------------------
         self.download_python_button = page.get_by_role("link", name="Download Python")
         self.static_text = page.locator(".introduction p").filter(
             has_text=re.compile(r"Python is a programming language", re.IGNORECASE)
@@ -93,6 +100,14 @@ class PythonPage:
         self.search_input.fill(text)
         self.search_input.press("Enter")
 # ----------Test main-header-------------------
+
+# -----------Test main-content row------------------------
+# -----------Test main-content row------------------------
+
+# -----------Test main-content list-widgets row------------------------
+    def should_have_upcoming_events(self):
+        expect(self.upcoming_events).to_have_count(5)
+# -----------Test main-content list-widgets row------------------------
 
     def should_have_title_python(self):
         expect(self.page).to_have_title(re.compile(r"Python", re.IGNORECASE))
