@@ -78,7 +78,9 @@ def test_python_link_navigation(page):
 def test_python_img(page):
     home_page = PythonPage(page)
     home_page.open()
-    home_page.should_have_img()
+    # home_page.get_python_img()   - він необхідний, якщо expect та assert знаходяться в методах
+    expect(home_page.get_python_img()).to_be_visible()
+    assert home_page.get_python_img().evaluate("img => img.naturalWidth > 0")
 def test_search_playwright_with_enter(page):
     home_page = PythonPage(page)
     home_page.open()
@@ -90,14 +92,35 @@ def test_search_playwright_with_enter(page):
 def test_upcoming_events(page):
     home_page = PythonPage(page)
     home_page.open()
-    home_page.should_have_upcoming_events()
+    # expect(self.upcoming_events).to_have_count(5)  інший спочіб перевірити кількість елементів
+    assert home_page.get_upcoming_events().count() == 5
+def test_first_event_text(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    expect(home_page.get_first_event()).to_be_visible()
+    expect(home_page.get_first_event()).to_contain_text(re.compile(r"\d{4}-\d{2}-\d{2}"))
+    # Це регулярний вираз. Він перевіряє, що текст починається з дати у форматі YYYY-MM-DD, далі є пробіли і будь‑який текст.Розбір: \d{4} — 4 цифри (рік),  - — дефіс,  \d{2} — 2 цифри (місяць),  - — дефіс,  \d{2} — 2 цифри (день),  \s+ — один або більше пробілів,   .+ — будь‑який текст після дати
+
+def test_all_events_text(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    texts = home_page.check_text_events()
+    print(texts)
+    assert len(texts) > 0
+    assert any("PyCon" in t for t in texts)
+    """Розбір:
+for t in texts проходить всі рядки
+"PyCon" in t перевіряє, чи є це слово всередині рядка
+any(...) повертає True, якщо хоча б один рядок містить "PyCon"
+Якщо жоден не містить — тест впаде."""
 # -----------Test main-content list-widgets row------------------------
 
 def test_open_python_home(page):
     home_page = PythonPage(page)
     home_page.open()
-    home_page.should_have_static_text()
-    home_page.should_have_title_python()
+    expect(home_page.get_static_text()).to_be_visible()
+    expect(page).to_have_title(re.compile(r"Python", re.IGNORECASE))
+    # home_page.should_have_title_python()
 
 def test_about_link_navigation(page):
     home_page = PythonPage(page)
@@ -110,7 +133,8 @@ def test_downloads_link_navigation(page):
     home_page.open()
     home_page.click_downloads_link()
     expect(page).to_have_url("https://www.python.org/downloads/")
-    home_page.should_have_download_python_button()
+    expect(home_page.get_download_python_button()).to_be_visible()
+
 
 def test_documentation_link_navigation(page):
     home_page = PythonPage(page)
@@ -129,7 +153,8 @@ def test_donate_link_navigation(page):
     home_page.open()
     home_page.open_donate()
     expect(page).to_have_url("https://www.python.org/psf/donations/")
-    home_page.should_have_main_header()
+    expect(home_page.get_support_text()).to_be_visible()
+
 
 def test_footer_about_link_navigation(page):
     home_page = PythonPage(page)
@@ -142,3 +167,4 @@ def test_footer_about_link_navigation(page):
 #     home_page.open()
 #     expect(page.python_img).to_be_visible()
 #     assert page.python_img.evaluate("img => img.naturalWidth > 0")
+
