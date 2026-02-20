@@ -73,8 +73,9 @@ def test_python_link_navigation(page):
     home_page.open()
     home_page.click_python_link()
     expect(page).to_have_url("https://www.python.org/")
-
 # ----------Test top-bar-----------------------
+
+# ----------Test main-header-------------------
 def test_python_img(page):
     home_page = PythonPage(page)
     home_page.open()
@@ -101,6 +102,14 @@ def test_first_event_text(page):
     expect(home_page.get_first_event()).to_contain_text(re.compile(r"\d{4}-\d{2}-\d{2}"))
     # Це регулярний вираз. Він перевіряє, що текст починається з дати у форматі YYYY-MM-DD, далі є пробіли і будь‑який текст.Розбір: \d{4} — 4 цифри (рік),  - — дефіс,  \d{2} — 2 цифри (місяць),  - — дефіс,  \d{2} — 2 цифри (день),  \s+ — один або більше пробілів,   .+ — будь‑який текст після дати
 
+def test_first_event_link(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    click_link_and_expect_url(
+        page,
+        home_page.click_first_event_link,
+        re.compile(r"/events/")
+    )
 def test_all_events_text(page):
     home_page = PythonPage(page)
     home_page.open()

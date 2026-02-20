@@ -66,6 +66,12 @@ class PythonPage:
         # self.first_event_text =
         self.first_event = self.upcoming_events.first
         self.all_event_text = self.upcoming_events
+        self.first_event_link = (
+            page.locator(".medium-widget.event-widget.last")
+            .locator(".shrubbery")
+            .locator(".menu li").locator("a")
+            .first
+        )
         # -----------Test main-content list-widgets row------------------------
 
 
@@ -122,10 +128,10 @@ class PythonPage:
         return self.first_event
     def check_text_events(self):
         return self.all_event_text.all_text_contents()
+    def click_first_event_link(self):
+        self.first_event_link.click()
 # -----------Test main-content list-widgets row------------------------
 
-    # def should_have_title_python(self):
-    #     expect(self.page).to_have_title(re.compile(r"Python", re.IGNORECASE))
 
     def click_about_link(self):
         self.about_link.click()
