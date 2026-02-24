@@ -89,6 +89,41 @@ def test_search_playwright_with_enter(page):
     expect(page).to_have_url(re.compile(r"/search/"))
 # ----------Test main-header-------------------
 
+# ----------Test menubar-----------------------
+def test_about_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_about_link()
+    expect(page).to_have_url("https://www.python.org/about/")
+
+def test_downloads_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_downloads_link()
+    expect(page).to_have_url("https://www.python.org/downloads/")
+    expect(home_page.get_download_python_button()).to_be_visible()
+
+
+def test_documentation_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_documentation_link()
+    expect(page).to_have_url("https://www.python.org/doc/")
+
+def test_community_menubar_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_community_menubar_link()
+    expect(page).to_have_url("https://www.python.org/community/")
+# ----------Test Downloads menu-----------------------
+def test_first_releases_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open_downloads()
+    home_page.click_first_releases()
+    expect(page).to_have_url(re.compile(r"/release/"))
+# ----------Test Downloads menu-----------------------
+# ----------Test menubar-----------------------
+
 # -----------Test main-content list-widgets row------------------------
 def test_upcoming_events(page):
     home_page = PythonPage(page)
@@ -131,31 +166,7 @@ def test_open_python_home(page):
     expect(page).to_have_title(re.compile(r"Python", re.IGNORECASE))
     # home_page.should_have_title_python()
 
-def test_about_link_navigation(page):
-    home_page = PythonPage(page)
-    home_page.open()
-    home_page.click_about_link()
-    expect(page).to_have_url("https://www.python.org/about/")
 
-def test_downloads_link_navigation(page):
-    home_page = PythonPage(page)
-    home_page.open()
-    home_page.click_downloads_link()
-    expect(page).to_have_url("https://www.python.org/downloads/")
-    expect(home_page.get_download_python_button()).to_be_visible()
-
-
-def test_documentation_link_navigation(page):
-    home_page = PythonPage(page)
-    home_page.open()
-    home_page.click_documentation_link()
-    expect(page).to_have_url("https://www.python.org/doc/")
-
-def test_community_menubar_link_navigation(page):
-    home_page = PythonPage(page)
-    home_page.open()
-    home_page.click_community_menubar_link()
-    expect(page).to_have_url("https://www.python.org/community/")
 
 def test_donate_link_navigation(page):
     home_page = PythonPage(page)

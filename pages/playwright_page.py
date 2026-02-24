@@ -52,7 +52,13 @@ class PythonPage:
         self.downloads_link = menubar.get_by_role("link", name="Downloads")
         self.documentation_link = menubar.get_by_role("link", name="Documentation")
         self.community_menubar_link = menubar.get_by_role("link", name="Community")
+
+        # ----------Test Downloads menu-----------------------
+
+        # ----------Test Downloads menu-----------------------
+
         # ----------Test menubar-----------------------
+
 
         # -----------Test main-content row------------------------
         # -----------Test main-content row------------------------
@@ -74,7 +80,17 @@ class PythonPage:
         )
         # -----------Test main-content list-widgets row------------------------
 
-
+        # ------------main-footer-links-----------------------------------------
+        self.first_releases = (
+            page.
+            get_by_role("main").
+            locator(".row.download-list-widget").
+            locator(".list-row-container.menu li").
+            locator(".release-download").
+            locator("a").
+            first
+        )
+        # ------------main-footer-links-----------------------------------------
 
         self.download_python_button = page.get_by_role("link", name="Download Python")
         self.static_text = page.locator(".introduction p").filter(
@@ -118,6 +134,23 @@ class PythonPage:
         self.search_input.press("Enter")
 # ----------Test main-header-------------------
 
+# ----------Test menubar-----------------------
+
+    def click_about_link(self):
+        self.about_link.click()
+    def click_downloads_link(self):
+        self.downloads_link.click()
+    def get_download_python_button(self):
+        return self.download_python_button
+    def click_documentation_link(self):
+        self.documentation_link.click()
+    def click_community_menubar_link(self):
+        self.community_menubar_link.click()
+# ----------Test Downloads menu-----------------------
+
+# ----------Test Downloads menu-----------------------
+# ----------Test menubar-----------------------
+
 # -----------Test main-content row------------------------
 # -----------Test main-content row------------------------
 
@@ -132,20 +165,12 @@ class PythonPage:
         self.first_event_link.click()
 # -----------Test main-content list-widgets row------------------------
 
-
-    def click_about_link(self):
-        self.about_link.click()
-
-    def click_downloads_link(self):
-        self.downloads_link.click()
-
-    def get_download_python_button(self):
-        return self.download_python_button
-    def click_documentation_link(self):
-        self.documentation_link.click()
-
-    def click_community_menubar_link(self):
-        self.community_menubar_link.click()
+#------------main-footer-links-----------------------------------------
+    def open_downloads(self):
+        self.page.goto("https://www.python.org/downloads/")
+    def click_first_releases(self):
+        self.first_releases.click()
+# ------------main-footer-links-----------------------------------------
 
     def get_static_text(self):
         return self.static_text
