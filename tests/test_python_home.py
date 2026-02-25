@@ -1,6 +1,8 @@
 import re
 
-from pages.playwright_page import PythonPage
+import pytest
+
+from pages.python_page import PythonPage
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, expect
 
 # --------------------------------
@@ -18,7 +20,6 @@ def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=200
     except PlaywrightTimeoutError:
         expect(page).to_have_url(expected_url)
 #--------------------------------
-
 
 # def test_open_playwright_home(page):
 #     home_page = PlaywrightHomePage(page)
@@ -42,10 +43,16 @@ def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=200
 #
 #     expect(page).to_have_url("https://playwright.dev/docs/intro")
 
+@pytest.fixture
+def home_page(page):
+    page.goto("https://www.python.org/")
+    return PythonPage(page)
+
+
 # ----------Test top-bar-----------------------
 def test_psf_link_navigation(page):
-    home_page = PythonPage(page)
-    home_page.open()
+    # home_page = PythonPage(page)
+    # home_page.open()
     home_page.click_psf_link()
     expect(page).to_have_url(re.compile(r"/psf-landing/"))
 def test_docs_link_navigation(page):
