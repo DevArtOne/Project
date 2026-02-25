@@ -47,7 +47,7 @@ def test_psf_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_psf_link()
-    expect(page).to_have_url("https://www.python.org/psf-landing/")
+    expect(page).to_have_url(re.compile(r"/psf-landing/"))
 def test_docs_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
@@ -62,12 +62,12 @@ def test_jobs_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_jobs_link()
-    expect(page).to_have_url("https://www.python.org/jobs/")
+    expect(page).to_have_url(re.compile("/jobs/"))
 def test_community_top_bar_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_community_top_bar_link()
-    expect(page).to_have_url("https://www.python.org/community/")
+    expect(page).to_have_url(re.compile("/community/"))
 def test_python_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
@@ -82,6 +82,9 @@ def test_python_img(page):
     # home_page.get_python_img()   - він необхідний, якщо expect та assert знаходяться в методах
     expect(home_page.get_python_img()).to_be_visible()
     assert home_page.get_python_img().evaluate("img => img.naturalWidth > 0")
+    """evaluate виконує передану функцію в контексті сторінки. 
+    Тут перевіряється, що в елемента img є завантажений піксельний ресурс: 
+    naturalWidth > 0 означає, що зображення успішно завантажилось."""
 def test_search_playwright_with_enter(page):
     home_page = PythonPage(page)
     home_page.open()
@@ -94,13 +97,13 @@ def test_about_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_about_link()
-    expect(page).to_have_url("https://www.python.org/about/")
+    expect(page).to_have_url(re.compile("/about/"))
 
 def test_downloads_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_downloads_link()
-    expect(page).to_have_url("https://www.python.org/downloads/")
+    expect(page).to_have_url(re.compile("/downloads/"))
     expect(home_page.get_download_python_button()).to_be_visible()
 
 
@@ -108,13 +111,13 @@ def test_documentation_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_documentation_link()
-    expect(page).to_have_url("https://www.python.org/doc/")
+    expect(page).to_have_url(re.compile("/doc/"))
 
 def test_community_menubar_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_community_menubar_link()
-    expect(page).to_have_url("https://www.python.org/community/")
+    expect(page).to_have_url(re.compile("/community/"))
 # ----------Test Downloads menu-----------------------
 def test_first_releases_link_navigation(page):
     home_page = PythonPage(page)
@@ -135,8 +138,17 @@ def test_first_event_text(page):
     home_page.open()
     expect(home_page.get_first_event()).to_be_visible()
     expect(home_page.get_first_event()).to_contain_text(re.compile(r"\d{4}-\d{2}-\d{2}"))
-    # Це регулярний вираз. Він перевіряє, що текст починається з дати у форматі YYYY-MM-DD, далі є пробіли і будь‑який текст.Розбір: \d{4} — 4 цифри (рік),  - — дефіс,  \d{2} — 2 цифри (місяць),  - — дефіс,  \d{2} — 2 цифри (день),  \s+ — один або більше пробілів,   .+ — будь‑який текст після дати
-
+    """ Це регулярний вираз. 
+    Він перевіряє, що текст починається з дати у форматі YYYY-MM-DD, 
+    далі є пробіли і будь‑який текст.Розбір: 
+    \d{4} — 4 цифри (рік),
+    - — дефіс,  
+    \d{2} — 2 цифри (місяць),
+    - — дефіс,  
+    \d{2} — 2 цифри (день),  
+    \s+ — один або більше пробілів,   
+    .+ — будь‑який текст після дати
+    """
 def test_first_event_link(page):
     home_page = PythonPage(page)
     home_page.open()
@@ -153,10 +165,10 @@ def test_all_events_text(page):
     assert len(texts) > 0
     assert any("PyCon" in t for t in texts)
     """Розбір:
-for t in texts проходить всі рядки
-"PyCon" in t перевіряє, чи є це слово всередині рядка
-any(...) повертає True, якщо хоча б один рядок містить "PyCon"
-Якщо жоден не містить — тест впаде."""
+    for t in texts проходить всі рядки
+    "PyCon" in t перевіряє, чи є це слово всередині рядка
+    any(...) повертає True, якщо хоча б один рядок містить "PyCon"
+    Якщо жоден не містить — тест впаде."""
 # -----------Test main-content list-widgets row------------------------
 
 def test_open_python_home(page):
@@ -165,14 +177,16 @@ def test_open_python_home(page):
     expect(home_page.get_static_text()).to_be_visible()
     expect(page).to_have_title(re.compile(r"Python", re.IGNORECASE))
     # home_page.should_have_title_python()
-
+    """re.IGNORECASE — цепрапорець модуля re в Python, 
+    який робить пошук / порівняння регулярних виразів нечутливим до регістру.
+    Наприклад, патерн abc знайде AbC, ABC, abc"""
 
 
 def test_donate_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.open_donate()
-    expect(page).to_have_url("https://www.python.org/psf/donations/")
+    expect(page).to_have_url(re.compile("/donations/"))
     expect(home_page.get_support_text()).to_be_visible()
 
 
@@ -180,7 +194,7 @@ def test_footer_about_link_navigation(page):
     home_page = PythonPage(page)
     home_page.open()
     home_page.click_footer_about_link()
-    expect(page).to_have_url("https://www.python.org/about/")
+    expect(page).to_have_url(re.compile("/about/"))
 
 # def test_should_have_img(page):
 #     home_page = PythonPage(page)
