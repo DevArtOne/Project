@@ -24,6 +24,7 @@ from playwright.sync_api import Page, expect
 
 
 class PythonPage:
+    URL = "https://www.python.org/"
     def __init__(self, page: Page):  
         self.page = page
 
@@ -105,7 +106,7 @@ class PythonPage:
 
 
     def open(self):
-        self.page.goto("https://www.python.org/")
+        self.page.goto(self.URL)
 
 # ----------Test top-bar-----------------------
     def click_psf_link(self):
