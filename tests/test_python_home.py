@@ -103,11 +103,7 @@ def test_community_menubar_link_navigation(home_page, page):
     home_page.click_community_menubar_link()
     expect(page).to_have_url(re.compile("/community/"))
 # ----------Test Downloads menu-----------------------
-def test_first_releases_link_navigation(page):
-    home_page = PythonPage(page)
-    home_page.open_downloads()
-    home_page.click_first_releases()
-    expect(page).to_have_url(re.compile(r"/release/"))
+
 # ----------Test Downloads menu-----------------------
 # ----------Test menubar-----------------------
 
@@ -146,6 +142,15 @@ def test_all_events_text(home_page, page):
     any(...) повертає True, якщо хоча б один рядок містить "PyCon"
     Якщо жоден не містить — тест впаде."""
 # -----------Test main-content list-widgets row------------------------
+
+
+# ------------main-footer-links-----------------------------------------
+def test_first_releases_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open_downloads()
+    home_page.click_first_releases()
+    expect(page).to_have_url(re.compile(r"/release/"))
+# ------------main-footer-links-----------------------------------------
 
 def test_open_python_home(home_page, page):
     expect(home_page.get_static_text()).to_be_visible()

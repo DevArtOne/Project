@@ -82,14 +82,11 @@ class PythonPage:
         # -----------Test main-content list-widgets row------------------------
 
         # ------------main-footer-links-----------------------------------------
+        # self.release_rows = page.locator("ul.list-row-container.menu li")
         self.first_releases = (
-            page.
-            get_by_role("main").
-            locator(".row.download-list-widget").
-            locator(".list-row-container.menu li").
-            locator(".release-download").
-            locator("a").
-            first
+            page.locator("ol.list-row-container.menu li").
+            get_by_role("link", name="Download").
+            nth(1)
         )
         # ------------main-footer-links-----------------------------------------
 
