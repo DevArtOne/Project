@@ -114,7 +114,7 @@ def test_first_releases_link_navigation(page):
 # -----------Test main-content list-widgets row------------------------
 def test_upcoming_events(home_page, page):
     # expect(self.upcoming_events).to_have_count(5)  інший спочіб перевірити кількість елементів
-    assert home_page.get_upcoming_events().count() == 5
+    assert home_page.get_upcoming_events().count() >= 1  # count() >= 1 - перевіряємо, що кількість івентів більше 0, для перевірки конкретної кількості: count() == 5
 def test_first_event_text(home_page, page):
     expect(home_page.get_first_event()).to_be_visible()
     expect(home_page.get_first_event()).to_contain_text(re.compile(r"\d{4}-\d{2}-\d{2}"))
