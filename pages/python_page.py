@@ -64,13 +64,23 @@ class PythonPage:
         # -----------Test main-content row------------------------
         # -----------Test main-content row------------------------
 
-        # -----------Test main-content list-widgets row------------------------
+        # ------------medium-widget blog-widget--------------------
+        # Select individual news list items, not the parent <ul>
+        self.news_items = (
+            page
+            .locator(".medium-widget.blog-widget")
+            .locator(".shrubbery")
+            .locator(".menu li")
+        )
+        # ------------medium-widget blog-widget--------------------
+
+        # -----------medium-widget event-widget last------------------------
         self.upcoming_events = (
             page.locator(".medium-widget.event-widget.last")
             .locator(".shrubbery")
             .locator(".menu li")
         )
-        # self.first_event_text =
+
         self.first_event = self.upcoming_events.first
         self.all_event_text = self.upcoming_events
         self.first_event_link = (
@@ -79,7 +89,7 @@ class PythonPage:
             .locator(".menu li").locator("a")
             .first
         )
-        # -----------Test main-content list-widgets row------------------------
+        # -----------medium-widget event-widget last------------------------
 
         # ------------main-footer-links-----------------------------------------
         # self.release_rows = page.locator("ul.list-row-container.menu li")
@@ -152,7 +162,12 @@ class PythonPage:
 # -----------Test main-content row------------------------
 # -----------Test main-content row------------------------
 
-# -----------Test main-content list-widgets row------------------------
+# ------------medium-widget blog-widget--------------------
+    def get_more_then_events(self):
+        return self.news_items
+# ------------medium-widget blog-widget--------------------
+
+# -----------medium-widget event-widget last------------------------
     def get_upcoming_events(self):
         return self.upcoming_events
     def get_first_event(self):
@@ -161,7 +176,7 @@ class PythonPage:
         return self.all_event_text.all_text_contents()
     def click_first_event_link(self):
         self.first_event_link.click()
-# -----------Test main-content list-widgets row------------------------
+# -----------medium-widget event-widget last------------------------
 
 #------------main-footer-links-----------------------------------------
     def open_downloads(self):

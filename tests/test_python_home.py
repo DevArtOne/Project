@@ -107,11 +107,22 @@ def test_community_menubar_link_navigation(home_page, page):
 # ----------Test Downloads menu-----------------------
 # ----------Test menubar-----------------------
 
-# -----------Test main-content list-widgets row------------------------
-def test_upcoming_events(home_page, page):
-    # expect(self.upcoming_events).to_have_count(5)  інший спочіб перевірити кількість елементів
+
+#------------medium-widget blog-widget--------------------
+def test_news_items(home_page):
+    expect(home_page.get_more_then_events().first).to_be_visible()
+    count = home_page.get_more_then_events().count()
+    number = 3
+    assert count > number, (
+        f'Expected more than {number} news items, but got {count}'
+    )
+#------------medium-widget blog-widget--------------------
+
+# -----------Test medium-widget event-widget last------------------------
+def test_upcoming_events(home_page):
+    # expect(self.get_upcoming_events()).to_have_count(5)  інший спочіб перевірити кількість елементів
     assert home_page.get_upcoming_events().count() >= 1  # count() >= 1 - перевіряємо, що кількість івентів більше 0, для перевірки конкретної кількості: count() == 5
-def test_first_event_text(home_page, page):
+def test_first_event_text(home_page):
     expect(home_page.get_first_event()).to_be_visible()
     expect(home_page.get_first_event()).to_contain_text(re.compile(r"\d{4}-\d{2}-\d{2}"))
     r""" Це регулярний вираз. 
@@ -141,7 +152,7 @@ def test_all_events_text(home_page, page):
     "PyCon" in t перевіряє, чи є це слово всередині рядка
     any(...) повертає True, якщо хоча б один рядок містить "PyCon"
     Якщо жоден не містить — тест впаде."""
-# -----------Test main-content list-widgets row------------------------
+# -----------Test medium-widget event-widget last------------------------
 
 
 # ------------main-footer-links-----------------------------------------
