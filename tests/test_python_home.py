@@ -110,12 +110,29 @@ def test_community_menubar_link_navigation(home_page, page):
 
 #------------medium-widget blog-widget--------------------
 def test_news_items(home_page):
-    expect(home_page.get_more_then_events().first).to_be_visible()
-    count = home_page.get_more_then_events().count()
+    expect(home_page.get_more_then_news().first).to_be_visible()
+    count = home_page.get_more_then_news().count()
     number = 3
     assert count > number, (
         f'Expected more than {number} news items, but got {count}'
     )
+
+def test_firs_new(home_page, page):
+    # expect(home_page.click_first_news()).to_be_visible()
+    click_link_and_expect_url(
+        page,
+        home_page.click_first_news,
+        re.compile(r"^https://(blog\.python\.org|pyfound\.blogspot\.com)/")
+    )
+    r"""
+    ^ — початок рядка;
+    https:// — literal схема;
+    \. - екранування крапки, щоб означати крапку, а не будь-який символ
+    (blog\.python\.org|pyfound\.blogspot\.com) — група з двома варіантами через | (або).
+    blog\.python\.org — домен blog.python.org (крапки екрановані).
+    pyfound\.blogspot\.com — домен pyfound.blogspot.com (крапки екрановані).
+    / — обов’язний слеш після домену
+    """
 #------------medium-widget blog-widget--------------------
 
 # -----------Test medium-widget event-widget last------------------------

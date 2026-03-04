@@ -1,4 +1,4 @@
-import re
+﻿import re
 
 from playwright.sync_api import Page, expect
 
@@ -72,6 +72,9 @@ class PythonPage:
             .locator(".shrubbery")
             .locator(".menu li")
         )
+        self.first_new_item = (
+            self.news_items.first.locator("a")
+        )
         # ------------medium-widget blog-widget--------------------
 
         # -----------medium-widget event-widget last------------------------
@@ -100,10 +103,12 @@ class PythonPage:
         )
         # ------------main-footer-links-----------------------------------------
 
-        self.download_python_button = page.get_by_role("link", name="Download Python")
-        self.static_text = page.locator(".introduction p").filter(
+        self.download_python_button = (page.
+                                       get_by_role("link", name="Download Python"))
+        self.static_text = (page.locator(".introduction p").
+                            filter(
             has_text=re.compile(r"Python is a programming language", re.IGNORECASE)
-        ).first
+        ).first)
 
         self.support_text = page.get_by_role(
             "heading",
@@ -163,8 +168,10 @@ class PythonPage:
 # -----------Test main-content row------------------------
 
 # ------------medium-widget blog-widget--------------------
-    def get_more_then_events(self):
+    def get_more_then_news(self):
         return self.news_items
+    def click_first_news(self):
+        self.first_new_item.click()
 # ------------medium-widget blog-widget--------------------
 
 # -----------medium-widget event-widget last------------------------
