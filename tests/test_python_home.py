@@ -59,7 +59,9 @@ def test_docs_link_navigation(home_page, page):
         page, home_page.click_docs_link, "https://docs.python.org/3/"
     )
 def test_pypi_link_navigation(home_page, page):
-    click_link_and_expect_url(page, home_page.click_pypi_link, "https://pypi.org/")
+    click_link_and_expect_url(
+        page, home_page.click_pypi_link, "https://pypi.org/"
+    )
 def test_jobs_link_navigation(home_page, page):
     home_page.click_jobs_link()
     expect(page).to_have_url(re.compile("/jobs/"))
@@ -72,7 +74,7 @@ def test_python_link_navigation(home_page, page):
 # ----------Test top-bar-----------------------
 
 # ----------Test main-header-------------------
-def test_python_img(home_page, page):
+def test_python_img(home_page):
     # home_page.get_python_img()   - він необхідний, якщо expect та assert знаходяться в методах
     expect(home_page.get_python_img()).to_be_visible()
     assert home_page.get_python_img().evaluate("img => img.naturalWidth > 0")
@@ -85,6 +87,12 @@ def test_search_playwright_with_enter(home_page, page):
 # ----------Test main-header-------------------
 
 # ----------Test menubar-----------------------
+def test_main_menu(home_page):
+    assert home_page.get_menu_items().count() == 7
+# def test_click_community_main_menu(home_page, page):
+#     home_page.click_community_main_menu()
+#     expect(page).to_have_url(re.compile("/community/"))
+
 def test_about_link_navigation(home_page, page):
     home_page.click_about_link()
     expect(page).to_have_url(re.compile("/about/"))
@@ -110,8 +118,8 @@ def test_community_menubar_link_navigation(home_page, page):
 
 #------------medium-widget blog-widget--------------------
 def test_news_items(home_page):
-    expect(home_page.get_more_then_news().first).to_be_visible()
-    count = home_page.get_more_then_news().count()
+    expect(home_page.get_news_items().first).to_be_visible()
+    count = home_page.get_news_items().count()
     number = 3
     assert count > number, (
         f'Expected more than {number} news items, but got {count}'
@@ -133,6 +141,13 @@ def test_firs_new(home_page, page):
     pyfound\.blogspot\.com — домен pyfound.blogspot.com (крапки екрановані).
     / — обов’язний слеш після домену
     """
+
+def test_first_python_news(home_page, page):
+    click_link_and_expect_url(
+        page,
+        home_page.click_first_python_new,
+        re.compile(r"^https://(blog\.python\.org|pyfound\.blogspot\.com)/")
+    )
 #------------medium-widget blog-widget--------------------
 
 # -----------Test medium-widget event-widget last------------------------

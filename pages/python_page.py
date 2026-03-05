@@ -49,6 +49,7 @@ class PythonPage:
 
 
         # ----------Test menubar-----------------------
+        self.main_menu = menubar.get_by_role("link")
         self.about_link = menubar.get_by_role("link", name="About")
         self.downloads_link = menubar.get_by_role("link", name="Downloads")
         self.documentation_link = menubar.get_by_role("link", name="Documentation")
@@ -69,29 +70,25 @@ class PythonPage:
         self.news_items = (
             page
             .locator(".medium-widget.blog-widget")
-            .locator(".shrubbery")
             .locator(".menu li")
         )
         self.first_new_item = (
             self.news_items.first.locator("a")
+        )
+        self.find_news_with_python = (
+            self.news_items.
+            filter(has_text=re.compile(r"Python", re.IGNORECASE))
         )
         # ------------medium-widget blog-widget--------------------
 
         # -----------medium-widget event-widget last------------------------
         self.upcoming_events = (
             page.locator(".medium-widget.event-widget.last")
-            .locator(".shrubbery")
             .locator(".menu li")
         )
 
         self.first_event = self.upcoming_events.first
         self.all_event_text = self.upcoming_events
-        self.first_event_link = (
-            page.locator(".medium-widget.event-widget.last")
-            .locator(".shrubbery")
-            .locator(".menu li").locator("a")
-            .first
-        )
         # -----------medium-widget event-widget last------------------------
 
         # ------------main-footer-links-----------------------------------------
@@ -148,7 +145,12 @@ class PythonPage:
 # ----------Test main-header-------------------
 
 # ----------Test menubar-----------------------
-
+    def get_menu_items(self):
+        return self.main_menu
+    # def click_community_main_menu(self):
+    #     self.main_menu.filter(has_text=re.
+    #                           compile(r"Community", re.
+    #                                   IGNORECASE)).click()   #Ще один метод кліку по кнопці Community
     def click_about_link(self):
         self.about_link.click()
     def click_downloads_link(self):
@@ -168,10 +170,12 @@ class PythonPage:
 # -----------Test main-content row------------------------
 
 # ------------medium-widget blog-widget--------------------
-    def get_more_then_news(self):
+    def get_news_items(self):
         return self.news_items
     def click_first_news(self):
         self.first_new_item.click()
+    def click_first_python_new(self):
+        self.find_news_with_python.first.click()
 # ------------medium-widget blog-widget--------------------
 
 # -----------medium-widget event-widget last------------------------
@@ -182,7 +186,7 @@ class PythonPage:
     def check_text_events(self):
         return self.all_event_text.all_text_contents()
     def click_first_event_link(self):
-        self.first_event_link.click()
+        self.upcoming_events.locator("a").first.click()
 # -----------medium-widget event-widget last------------------------
 
 #------------main-footer-links-----------------------------------------
