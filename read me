@@ -1,0 +1,101 @@
+   1) В якому випадку в дужках потрібно писати home_page або page в тестових функціях
+в дужках тесту пишеш тільки ті фікстури, які реально потрібні в цьому тесті.
+Правило:
+1.
+page — коли ти звертаєшся до Playwright Page напряму
+(page.goto, expect(page).to_have_url, page.context, page.locator).
+2.
+home_page — коли тест працює через методи/локатори сторінки
+(home_page.click_*, home_page.get_*).
+3.
+Обидва — коли потрібні і методи home_page, і прямі перевірки/дії на page
+(наприклад, home_page.click_* + expect(page).to_have_url(...)).
+Приклади:
+def test_only_page(page):
+    page.goto("https://www.python.org/")
+    expect(page).to_have_title("Python")
+def test_only_home_page(home_page):
+    expect(home_page.get_python_img()).to_be_visible()
+def test_both(home_page, page):
+    home_page.click_docs_link()
+    expect(page).to_have_url("https://docs.python.org/3/")
+
+
+    2)r""" helper‑функція, щоб стабільно перевіряти переходи, коли лінк може:
+1.
+Відкритися в новій вкладці (popup)
+2.
+Відкритися в цій же вкладці"""
+def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=2000):
+    try:
+        with page.context.expect_page(timeout=popup_timeout_ms) as popup_info:
+            click_fn()
+        popup_page = popup_info.value
+        expect(popup_page).to_have_url(expected_url)
+    except PlaywrightTimeoutError:
+        expect(page).to_have_url(expected_url)
+
+
+    3)assert home_page.get_python_img().evaluate("img => img.naturalWidth > 0")
+r"""evaluate виконує передану функцію в контексті сторінки.
+Тут перевіряється, що в елемента img є завантажений піксельний ресурс:
+naturalWidth > 0 означає, що зображення успішно завантажилось."""
+
+
+    4)click_link_and_expect_url(page,home_page.click_first_news,
+re.compile(r"^https://(blog\.python\.org|pyfound\.blogspot\.com)/"))
+r"""
+^ — початок рядка;
+https:// — literal схема;
+\. - екранування крапки, щоб означати крапку, а не будь-який символ
+(blog\.python\.org|pyfound\.blogspot\.com) — група з двома варіантами через | (або).
+blog\.python\.org — домен blog.python.org (крапки екрановані).
+pyfound\.blogspot\.com — домен pyfound.blogspot.com (крапки екрановані).
+/ — обов’язний слеш після домену
+"""
+
+
+    5)expect(home_page.get_first_event()).to_contain_text(re.compile(r"\d{4}-\d{2}-\d{2}"))
+r""" Це регулярний вираз.
+Він перевіряє, що текст починається з дати у форматі YYYY-MM-DD,
+далі є пробіли і будь‑який текст.Розбір:
+\d{4} — 4 цифри (рік),
+- — дефіс,
+\d{2} — 2 цифри (місяць),
+- — дефіс,
+\d{2} — 2 цифри (день),
+\s+ — один або більше пробілів,
+.+ — будь‑який текст після дати
+"""
+
+
+    6)assert any("PyCon" in t for t in texts)
+r"""Розбір:
+for t in texts проходить всі рядки
+"PyCon" in t перевіряє, чи є це слово всередині рядка
+any(...) повертає True, якщо хоча б один рядок містить "PyCon"
+Якщо жоден не містить — тест впаде."""
+
+
+    7) expect(page).to_have_title(re.compile(r"Python", re.IGNORECASE))
+"""re.IGNORECASE — цепрапорець модуля re в Python,
+який робить пошук / порівняння регулярних виразів нечутливим до регістру.
+Наприклад, патерн abc знайде AbC, ABC, abc"""
+
+
+    8)Фікстура для зменшення коду
+@pytest.fixture
+def home_page(page):
+    obj = PythonPage(page)
+    obj.open()
+    return obj
+
+def test_psf_link_navigation(home_page, page):
+    home_page.click_psf_link()
+
+ замість
+
+ def test_psf_link_navigation(page):
+    home_page = PythonPage(page)
+    home_page.open()
+    home_page.click_psf_link()

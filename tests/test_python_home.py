@@ -21,28 +21,6 @@ def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=200
         expect(page).to_have_url(expected_url)
 #--------------------------------
 
-# def test_open_playwright_home(page):
-#     home_page = PlaywrightHomePage(page)
-#
-#     home_page.open()
-#     home_page.should_have_main_header()
-#
-# def test_get_started_navigation(page):
-#     home_page = PlaywrightHomePage(page)
-#
-#     home_page.open()
-#     home_page.click_get_started()
-#
-#     expect(page).to_have_url("https://playwright.dev/docs/intro")
-#
-# def test_docs_navigation(page):
-#     home_page = PlaywrightHomePage(page)
-#
-#     home_page.open()
-#     home_page.click_docs()
-#
-#     expect(page).to_have_url("https://playwright.dev/docs/intro")
-
 @pytest.fixture
 def home_page(page):
     obj = PythonPage(page)

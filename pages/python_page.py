@@ -100,8 +100,7 @@ class PythonPage:
         )
         # ------------main-footer-links-----------------------------------------
 
-        self.download_python_button = (page.
-                                       get_by_role("link", name="Download Python"))
+        self.download_python_button = (page.get_by_role("link", name="Download Python"))
         self.static_text = (page.locator(".introduction p").
                             filter(
             has_text=re.compile(r"Python is a programming language", re.IGNORECASE)
