@@ -32,38 +32,38 @@ class PythonPage:
         menubar = page.get_by_role("menubar")
         footer = page.get_by_role("contentinfo")
 
-        # ----------Test top-bar-----------------------
+        # ----------top-bar-----------------------
         self.psf_link = top_bar.get_by_role("link", name="PSF")
         self.docs_link = top_bar.get_by_role("link", name="Docs")
         self.pypi_link = top_bar.get_by_role("link", name="PyPI")
         self.jobs_link = top_bar.get_by_role("link", name="Jobs")
         self.community_top_bar_link = top_bar.get_by_role("link", name="Community")
         self.python_link = top_bar.get_by_role("link", name="Python")
-        # ----------Test top-bar-----------------------
+        # ----------top-bar-----------------------
 
-        # ----------Test main-header-------------------
+        # ----------main-header-------------------
         self.python_img = page.get_by_role("img", name=re.compile(r"python", re.IGNORECASE))
         self.donate_link = page.get_by_role("link", name="Donate", exact=True)
         self.search_input = page.get_by_role("searchbox")
-        # ----------Test main-header-------------------
+        # ----------main-header-------------------
 
 
-        # ----------Test menubar-----------------------
+        # ----------menubar-----------------------
         self.main_menu = menubar.get_by_role("link")
         self.about_link = menubar.get_by_role("link", name="About")
         self.downloads_link = menubar.get_by_role("link", name="Downloads")
         self.documentation_link = menubar.get_by_role("link", name="Documentation")
         self.community_menubar_link = menubar.get_by_role("link", name="Community")
 
-        # ----------Test Downloads menu-----------------------
+        # ----------Downloads menu-----------------------
 
-        # ----------Test Downloads menu-----------------------
+        # ----------Downloads menu-----------------------
 
-        # ----------Test menubar-----------------------
+        # ----------menubar-----------------------
 
 
-        # -----------Test main-content row------------------------
-        # -----------Test main-content row------------------------
+        # -----------main-content row------------------------
+        # -----------main-content row------------------------
 
         # ------------medium-widget blog-widget--------------------
         # Select individual news list items, not the parent <ul>
@@ -116,7 +116,7 @@ class PythonPage:
     def open(self):
         self.page.goto(self.URL)
 
-# ----------Test top-bar-----------------------
+# ----------top-bar-----------------------
     def click_psf_link(self):
         self.psf_link.click()
     def click_docs_link(self):
@@ -129,21 +129,23 @@ class PythonPage:
         self.community_top_bar_link.click()
     def click_python_link(self):
         self.python_link.click()
-# ----------Test top-bar-----------------------
+# ----------top-bar-----------------------
 
-# ----------Test main-header-------------------
+# ----------main-header-------------------
     def get_python_img(self):
         return self.python_img
         # expect(self.python_img).to_be_visible()
         # assert self.python_img.evaluate("img => img.naturalWidth > 0")
     def open_donate(self):
         self.donate_link.click()
+    def search_form_is_visible(self):
+        return self.search_input
     def search_for(self, text: str):
         self.search_input.fill(text)
         self.search_input.press("Enter")
-# ----------Test main-header-------------------
+# ----------main-header-------------------
 
-# ----------Test menubar-----------------------
+# ----------menubar-----------------------
     def get_menu_items(self):
         return self.main_menu
     # def click_community_main_menu(self):
@@ -160,13 +162,13 @@ class PythonPage:
         self.documentation_link.click()
     def click_community_menubar_link(self):
         self.community_menubar_link.click()
-# ----------Test Downloads menu-----------------------
+# ----------Downloads menu-----------------------
 
-# ----------Test Downloads menu-----------------------
-# ----------Test menubar-----------------------
+# ----------Downloads menu-----------------------
+# ----------menubar-----------------------
 
-# -----------Test main-content row------------------------
-# -----------Test main-content row------------------------
+# -----------main-content row------------------------
+# -----------main-content row------------------------
 
 # ------------medium-widget blog-widget--------------------
     def get_news_items(self):

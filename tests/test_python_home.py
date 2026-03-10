@@ -7,17 +7,31 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, expect
 
 # --------------------------------
 r""" helper‑функція, щоб стабільно перевіряти переходи, коли лінк може:
-1.
-Відкритися в новій вкладці (popup)
-2.
-Відкритися в цій же вкладці"""
-def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=2000):
+1.Відкритися в новій вкладці (popup)
+2.Відкритися в цій же вкладці"""
+
+#Без page.wait_for_load_state
+# def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=2000):
+#     try:
+#         with page.context.expect_page(timeout=popup_timeout_ms) as popup_info:
+#             click_fn()
+#         popup_page = popup_info.value
+#         expect(popup_page).to_have_url(expected_url)
+#     except PlaywrightTimeoutError:
+#         expect(page).to_have_url(expected_url)
+
+#З page.wait_for_load_state
+def click_link_and_expect_url(page, click_fn, expected_url, popup_timeout_ms=2000, wait_state=None):
     try:
         with page.context.expect_page(timeout=popup_timeout_ms) as popup_info:
             click_fn()
         popup_page = popup_info.value
+        if wait_state:
+            popup_page.wait_for_load_state(wait_state)
         expect(popup_page).to_have_url(expected_url)
     except PlaywrightTimeoutError:
+        if wait_state:
+            page.wait_for_load_state(wait_state)
         expect(page).to_have_url(expected_url)
 #--------------------------------
 
@@ -28,7 +42,7 @@ def home_page(page):
     return obj
 
 
-# ----------Test top-bar-----------------------
+# ----------top-bar-----------------------
 def test_psf_link_navigation(home_page, page):
     home_page.click_psf_link()
     expect(page).to_have_url(re.compile(r"/psf-landing/"))
@@ -49,9 +63,9 @@ def test_community_top_bar_link_navigation(home_page, page):
 def test_python_link_navigation(home_page, page):
     home_page.click_python_link()
     expect(page).to_have_url("https://www.python.org/")
-# ----------Test top-bar-----------------------
+# ----------top-bar-----------------------
 
-# ----------Test main-header-------------------
+# ----------main-header-------------------
 def test_python_img(home_page):
     # home_page.get_python_img()   - він необхідний, якщо expect та assert знаходяться в методах
     expect(home_page.get_python_img()).to_be_visible()
@@ -59,12 +73,14 @@ def test_python_img(home_page):
     r"""evaluate виконує передану функцію в контексті сторінки. 
     Тут перевіряється, що в елемента img є завантажений піксельний ресурс: 
     naturalWidth > 0 означає, що зображення успішно завантажилось."""
+def test_search_visible(home_page):
+    expect(home_page.search_form_is_visible()).to_be_visible()
 def test_search_playwright_with_enter(home_page, page):
     home_page.search_for("playwright")
     expect(page).to_have_url(re.compile(r"/search/"))
-# ----------Test main-header-------------------
+# ----------main-header-------------------
 
-# ----------Test menubar-----------------------
+# ----------menubar-----------------------
 def test_main_menu(home_page):
     assert home_page.get_menu_items().count() == 7
 # def test_click_community_main_menu(home_page, page):
@@ -88,10 +104,10 @@ def test_documentation_link_navigation(home_page, page):
 def test_community_menubar_link_navigation(home_page, page):
     home_page.click_community_menubar_link()
     expect(page).to_have_url(re.compile("/community/"))
-# ----------Test Downloads menu-----------------------
+# ----------Downloads menu-----------------------
 
-# ----------Test Downloads menu-----------------------
-# ----------Test menubar-----------------------
+# ----------Downloads menu-----------------------
+# ----------menubar-----------------------
 
 
 #------------medium-widget blog-widget--------------------
@@ -108,8 +124,10 @@ def test_firs_new(home_page, page):
     click_link_and_expect_url(
         page,
         home_page.click_first_news,
-        re.compile(r"^https://(blog\.python\.org|pyfound\.blogspot\.com)/")
+        re.compile(r"^https://(blog\.python\.org|pyfound\.blogspot\.com)/"),
+        wait_state="domcontentloaded" #З інтеграцією в хелпер функцію
     )
+    # page.wait_for_load_state("domcontentloaded")  #Без інтеграції в хелпер функцію
     r"""
     ^ — початок рядка;
     https:// — literal схема;
@@ -128,7 +146,7 @@ def test_first_python_news(home_page, page):
     )
 #------------medium-widget blog-widget--------------------
 
-# -----------Test medium-widget event-widget last------------------------
+# -----------medium-widget event-widget last------------------------
 def test_upcoming_events(home_page):
     # expect(self.get_upcoming_events()).to_have_count(5)  інший спочіб перевірити кількість елементів
     assert home_page.get_upcoming_events().count() >= 1  # count() >= 1 - перевіряємо, що кількість івентів більше 0, для перевірки конкретної кількості: count() == 5
@@ -162,7 +180,7 @@ def test_all_events_text(home_page, page):
     "PyCon" in t перевіряє, чи є це слово всередині рядка
     any(...) повертає True, якщо хоча б один рядок містить "PyCon"
     Якщо жоден не містить — тест впаде."""
-# -----------Test medium-widget event-widget last------------------------
+# -----------medium-widget event-widget last------------------------
 
 
 # ------------main-footer-links-----------------------------------------
