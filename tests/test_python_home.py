@@ -164,6 +164,10 @@ def test_first_event_text(home_page):
     \s+ — один або більше пробілів,   
     .+ — будь‑який текст після дати
     """
+
+# def test_event_count(home_page):
+#     expect.poll(lambda: home_page.get_upcoming_events().count()).to_be_greater_than(3)
+
 def test_first_event_link(home_page, page):
     click_link_and_expect_url(
         page,
@@ -182,6 +186,11 @@ def test_all_events_text(home_page, page):
     Якщо жоден не містить — тест впаде."""
 # -----------medium-widget event-widget last------------------------
 
+#------------psf-widget-------------------------------------------
+def test_python_img_2(home_page):
+    print(expect)
+    expect(home_page.get_python_img_2()).to_have_css("background", re.compile(r"python-logo-large"))
+#------------psf-widget-------------------------------------------
 
 # ------------main-footer-links-----------------------------------------
 def test_first_releases_link_navigation(page):
@@ -215,6 +224,5 @@ def test_footer_about_link_navigation(home_page, page):
 #     home_page.open()
 #     expect(page.python_img).to_be_visible()
 #     assert page.python_img.evaluate("img => img.naturalWidth > 0")
-
 
 

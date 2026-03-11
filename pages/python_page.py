@@ -1,6 +1,6 @@
 ﻿import re
 
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 # class PlaywrightHomePage:
 #     def __init__(self, page: Page):
@@ -90,6 +90,10 @@ class PythonPage:
         self.first_event = self.upcoming_events.first
         self.all_event_text = self.upcoming_events
         # -----------medium-widget event-widget last------------------------
+
+        # ------------psf-widget-------------------------------------------
+        self.python_img_2 = page.locator(".psf-widget").locator(".python-logo")
+        # ------------psf-widget-------------------------------------------
 
         # ------------main-footer-links-----------------------------------------
         # self.release_rows = page.locator("ul.list-row-container.menu li")
@@ -189,6 +193,11 @@ class PythonPage:
     def click_first_event_link(self):
         self.upcoming_events.locator("a").first.click()
 # -----------medium-widget event-widget last------------------------
+
+#------------psf-widget-------------------------------------------
+    def get_python_img_2(self):
+        return self.python_img_2
+#------------psf-widget-------------------------------------------
 
 #------------main-footer-links-----------------------------------------
     def open_downloads(self):
