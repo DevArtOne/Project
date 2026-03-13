@@ -1,3 +1,17 @@
+Найпоширеніші перевірки для locator
+Видимість - expect(locator).to_be_visible()
+Прихованість - expect(locator).to_be_hidden()
+Текст - expect(locator).to_have_text("Python") / expect(locator).to_contain_text("Python")
+Кількість елементів - expect(locator).to_have_count(5)
+Атрибут - expect(locator).to_have_attribute("href", "/downloads/")
+CSS клас - expect(locator).to_have_class("active")
+Значення input - expect(locator).to_have_class("active")
+
+Найчастіші перевірки для Page
+URL - expect(page).to_have_url("https://python.org") / expect(page).to_have_url(re.compile("python"))
+Title - expect(page).to_have_title("Welcome to Python.org")
+Навігація -
+
    1) В якому випадку в дужках потрібно писати home_page або page в тестових функціях
 в дужках тесту пишеш тільки ті фікстури, які реально потрібні в цьому тесті.
 Правило:

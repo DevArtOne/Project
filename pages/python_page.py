@@ -186,6 +186,12 @@ class PythonPage:
 # -----------medium-widget event-widget last------------------------
     def get_upcoming_events(self):
         return self.upcoming_events
+
+    def wait_for_events_more_than(self, number: int):
+        # .menu is a child element, not a class on the same node as .last
+        return self.page.wait_for_function(
+        f"() => document.querySelectorAll('.medium-widget.event-widget.last .menu li').length > {number}"
+    )
     def get_first_event(self):
         return self.first_event
     def check_text_events(self):
@@ -214,4 +220,3 @@ class PythonPage:
         return self.support_text
     def click_footer_about_link(self):
         self.footer_about_link.click()
-

@@ -165,9 +165,10 @@ def test_first_event_text(home_page):
     .+ — будь‑який текст після дати
     """
 
-# def test_event_count(home_page):
-#     expect.poll(lambda: home_page.get_upcoming_events().count()).to_be_greater_than(3)
-
+def test_event_count(home_page):
+    # Вимога >3 нестабільна, бо на сайті може бути менше 4 івентів.
+    # Перевіряємо, що є хоча б один.
+    home_page.wait_for_events_more_than(0)
 def test_first_event_link(home_page, page):
     click_link_and_expect_url(
         page,
@@ -224,5 +225,4 @@ def test_footer_about_link_navigation(home_page, page):
 #     home_page.open()
 #     expect(page.python_img).to_be_visible()
 #     assert page.python_img.evaluate("img => img.naturalWidth > 0")
-
 
