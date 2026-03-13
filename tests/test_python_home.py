@@ -78,6 +78,18 @@ def test_search_visible(home_page):
 def test_search_playwright_with_enter(home_page, page):
     home_page.search_for("playwright")
     expect(page).to_have_url(re.compile(r"/search/"))
+def test_button_go_click(home_page, page):
+    expect(home_page.search_form_is_visible()).to_be_visible()
+    home_page.click_go_button("Download")
+    expect(page).to_have_url(re.compile(r"/search/\?q=Download(&.*)?$"))
+    page.wait_for_load_state("domcontentloaded")
+"""
+(&.*)? — необов’язковий блок:
+& — початок додаткових параметрів,
+.* — будь-які символи (інші параметри),
+? — робить весь блок опційним.
+$ — кінець рядка.
+"""
 # ----------main-header-------------------
 
 # ----------menubar-----------------------

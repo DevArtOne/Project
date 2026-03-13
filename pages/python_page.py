@@ -45,6 +45,7 @@ class PythonPage:
         self.python_img = page.get_by_role("img", name=re.compile(r"python", re.IGNORECASE))
         self.donate_link = page.get_by_role("link", name="Donate", exact=True)
         self.search_input = page.get_by_role("searchbox")
+        self.go_button = page.get_by_role("button", name="GO")
         # ----------main-header-------------------
 
 
@@ -147,6 +148,9 @@ class PythonPage:
     def search_for(self, text: str):
         self.search_input.fill(text)
         self.search_input.press("Enter")
+    def click_go_button(self, text: str):
+        self.search_input.fill(text)
+        self.go_button.click()
 # ----------main-header-------------------
 
 # ----------menubar-----------------------
