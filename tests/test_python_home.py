@@ -1,4 +1,5 @@
 ﻿import re
+from operator import truediv
 
 import pytest
 
@@ -238,3 +239,14 @@ def test_footer_about_link_navigation(home_page, page):
 #     expect(page.python_img).to_be_visible()
 #     assert page.python_img.evaluate("img => img.naturalWidth > 0")
 
+#-----------------API testing-----------------------------
+def test_api_news(home_page, page):
+    with page.expect_response("**/api/**") as response_info:
+        home_page.click_more_news_link()
+
+    response = response_info.value
+    # data = response.json()
+    # assert "news" in data
+    assert response.status == 200
+
+#-----------------API testing-----------------------------

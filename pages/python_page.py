@@ -118,6 +118,12 @@ class PythonPage:
         self.footer_about_link = footer.get_by_role("link", name="About")
 
 
+        #-----------------API testing-----------------------------
+        self.more_news_button = (page.
+                                 locator(".list-widgets.row").
+                                 get_by_title("More News"))
+        #-----------------API testing-----------------------------
+
     def open(self):
         self.page.goto(self.URL)
 
@@ -224,3 +230,9 @@ class PythonPage:
         return self.support_text
     def click_footer_about_link(self):
         self.footer_about_link.click()
+
+
+    #-----------------API testing-----------------------------
+    def click_more_news_link(self):
+        self.more_news_button.click()
+    #-----------------API testing-----------------------------
